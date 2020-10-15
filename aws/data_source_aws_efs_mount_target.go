@@ -17,7 +17,11 @@ func dataSourceAwsEfsMountTarget() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"mount_target_id": {
 				Type:     schema.TypeString,
-				Required: true,
+				Required: false,
+			},
+			"file_system_id_in": {
+				Type:     schema.TypeString,
+				Required: false,
 			},
 			"file_system_arn": {
 				Type:     schema.TypeString,
@@ -71,8 +75,14 @@ func dataSourceAwsEfsMountTarget() *schema.Resource {
 func dataSourceAwsEfsMountTargetRead(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).efsconn
 
-	describeEfsOpts := &efs.DescribeMountTargetsInput{
-		MountTargetId: aws.String(d.Get("mount_target_id").(string)),
+	describeEfsOpts := &efs.DescribeMountTargetsInput{}
+
+	if v, ok := d.GetOk("mount_target_id"); ok {
+		describeEfsOpts.MountTargetId = aws.String(v.(string))
+	}
+
+	if v, ok := d.GetOk("file_system_id_in"); ok {
+		describeEfsOpts.FileSystemId = aws.String(v.(string))
 	}
 
 	log.Printf("[DEBUG] Reading EFS Mount Target: %s", describeEfsOpts)
