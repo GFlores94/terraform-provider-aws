@@ -17,11 +17,7 @@ func dataSourceAwsEfsMountTarget() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"mount_target_id": {
 				Type:     schema.TypeString,
-				Required: false,
-			},
-			"file_system_id_in": {
-				Type:     schema.TypeString,
-				Required: false,
+				Optional: true,
 			},
 			"file_system_arn": {
 				Type:     schema.TypeString,
@@ -30,6 +26,7 @@ func dataSourceAwsEfsMountTarget() *schema.Resource {
 			"file_system_id": {
 				Type:     schema.TypeString,
 				Computed: true,
+				Optional: true,
 			},
 			"ip_address": {
 				Type:     schema.TypeString,
@@ -81,7 +78,7 @@ func dataSourceAwsEfsMountTargetRead(d *schema.ResourceData, meta interface{}) e
 		describeEfsOpts.MountTargetId = aws.String(v.(string))
 	}
 
-	if v, ok := d.GetOk("file_system_id_in"); ok {
+	if v, ok := d.GetOk("file_system_id"); ok {
 		describeEfsOpts.FileSystemId = aws.String(v.(string))
 	}
 

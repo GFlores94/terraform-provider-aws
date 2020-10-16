@@ -27,7 +27,9 @@ data "aws_efs_mount_target" "by_id" {
 
 The following arguments are supported:
 
-* `mount_target_id` - (Required) ID of the mount target that you want to have described
+* `mount_target_id` - (Optional) ID of the mount target that you want to have described
+
+* `file_system_id` - (Optional) ID of the file system that you want to have described
 
 ## Attributes Reference
 
